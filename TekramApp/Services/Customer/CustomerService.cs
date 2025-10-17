@@ -9,7 +9,7 @@ using TekramApp.Models;
 using TekramApp.ViewModels;
 using static TekramApp.Helpers.JWTHelper;
 
-namespace TekramApp.Services
+namespace TekramApp.Services.Customer
 {
     public class CustomerService : ICustomerService
     {

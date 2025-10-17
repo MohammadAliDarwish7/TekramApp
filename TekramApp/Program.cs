@@ -7,8 +7,8 @@ using Microsoft.OpenApi.Models;
 using TekramApp.Context;
 using TekramApp.Interfaces;
 using TekramApp.Models;
-using TekramApp.Services;
 using TekramApp.Services.Auth;
+using TekramApp.Services.Customer;
 using static TekramApp.Helpers.JWTHelper;
 using static TekramApp.Helpers.PasswordHelper;
 

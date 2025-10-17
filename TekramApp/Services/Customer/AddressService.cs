@@ -5,7 +5,7 @@ using TekramApp.Interfaces;
 using TekramApp.Models;
 using TekramApp.ViewModels;
 
-namespace TekramApp.Services
+namespace TekramApp.Services.Customer
 {
     public class AddressService 
     {
