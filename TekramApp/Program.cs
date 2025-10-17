@@ -8,7 +8,7 @@ using TekramApp.Context;
 using TekramApp.Interfaces;
 using TekramApp.Models;
 using TekramApp.Services.Auth;
-using TekramApp.Services.Customer;
+using TekramApp.Services.Customers;
 using static TekramApp.Helpers.JWTHelper;
 using static TekramApp.Helpers.PasswordHelper;
 

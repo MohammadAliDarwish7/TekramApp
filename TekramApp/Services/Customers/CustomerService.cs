@@ -9,13 +9,13 @@ using TekramApp.Models;
 using TekramApp.ViewModels;
 using static TekramApp.Helpers.JWTHelper;
 
-namespace TekramApp.Services.Customer
+namespace TekramApp.Services.Customers
 {
     public class CustomerService : ICustomerService
     {
         private readonly TekramDbContext _context;
         private readonly IJwtTokenService _jwtTokenService;
-        private readonly IPasswordHasher<Customer> _passwordHasher;
+        private readonly IPasswordHasher<Models.Customer> _passwordHasher;
 
         public CustomerService(TekramDbContext context, IPasswordHasher<Customer> passwordHasher, IJwtTokenService jwtTokenService)
         {

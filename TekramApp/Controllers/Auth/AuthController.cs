@@ -43,7 +43,9 @@ namespace TekramApp.Controllers.Auth
                 return Unauthorized();
 
             // Convert all claims to a dictionary
-            var claims = User.Claims.ToDictionary(c => c.Type, c => c.Value);
+            var claims = User.Claims
+     .GroupBy(c => c.Type)
+     .ToDictionary(g => g.Key, g => g.Select(c => c.Value).ToList());
 
             return Ok(claims);
         }
