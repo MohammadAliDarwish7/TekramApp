@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Security.Claims;
 using TekramApp.Interfaces;
 using TekramApp.Services.Auth;
 
@@ -31,6 +33,19 @@ namespace TekramApp.Controllers.Auth
             {
                 return Unauthorized("Invalid username or password");
             }
+        }
+
+        [HttpGet("GetCurrentUser")]
+        [Authorize]
+        public IActionResult GetCurrentUser()
+        {
+            if (!User.Identity?.IsAuthenticated ?? false)
+                return Unauthorized();
+
+            // Convert all claims to a dictionary
+            var claims = User.Claims.ToDictionary(c => c.Type, c => c.Value);
+
+            return Ok(claims);
         }
         public record LoginDto(string Username, string Password);
     }

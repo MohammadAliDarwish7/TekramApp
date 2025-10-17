@@ -25,8 +25,8 @@ namespace TekramApp.Services
                     Id = a.Id,
                     CustomerId = a.CustomerId,
                     AddressLine = a.AddressLine,
-                    //CountryId = a.CountryId,
-                    //CityId = a.CityId,
+                    CountryId = a.CountryId,
+                    CityId = a.CityId,
                     IsDefault = a.IsDefault
                 })
                 .ToListAsync();
@@ -41,8 +41,8 @@ namespace TekramApp.Services
                 Id = a.Id,
                 CustomerId = a.CustomerId,
                 AddressLine = a.AddressLine,
-                //CountryId = a.CountryId,
-                //CityId = a.CityId,
+                CountryId = a.CountryId,
+                CityId = a.CityId,
                 IsDefault = a.IsDefault
             };
         }
@@ -70,8 +70,8 @@ namespace TekramApp.Services
             {
                 CustomerId = dto.CustomerId,
                 AddressLine = dto.AddressLine,
-                //CountryId = dto.CountryId,
-                //CityId = dto.CityId,
+                CountryId = dto.CountryId,
+                CityId = dto.CityId,
                 IsDefault = dto.IsDefault
             };
 
@@ -87,8 +87,8 @@ namespace TekramApp.Services
             if (address == null) return null;
 
             address.AddressLine = dto.AddressLine;
-            //address.CountryId = dto.CountryId;
-            //address.CityId = dto.CityId;
+            address.CountryId = dto.CountryId;
+            address.CityId = dto.CityId;
 
             // Handle default logic
             if (dto.IsDefault)
@@ -135,20 +135,20 @@ namespace TekramApp.Services
         }
 
 
-        //public async Task<List<CountryDto>> GetCountriesAsync()
-        //{
-        //    return await _context.Countries
-        //        .Select(c => new CountryDto { Id = c.Id, Name = c.Name })
-        //        .ToListAsync();
-        //}
+        public async Task<List<CountryDto>> GetCountriesAsync()
+        {
+            return await _context.Countries
+                .Select(c => new CountryDto { Id = c.Id, Name = c.Name })
+                .ToListAsync();
+        }
 
-        //public async Task<List<CityDto>> GetCitiesByCountryAsync(Guid countryId)
-        //{
-        //    return await _context.Cities
-        //        .Where(c => c.CountryId == countryId)
-        //        .Select(c => new CityDto { Id = c.Id, Name = c.Name })
-        //        .ToListAsync();
-        //}
+        public async Task<List<CityDto>> GetCitiesByCountryAsync(Guid countryId)
+        {
+            return await _context.Cities
+                .Where(c => c.CountryId == countryId)
+                .Select(c => new CityDto { Id = c.Id, Name = c.Name })
+                .ToListAsync();
+        }
     }
 
 }
