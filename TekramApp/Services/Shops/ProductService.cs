@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using TekramApp.Context;
 using TekramApp.Interfaces;
 using TekramApp.Models;
@@ -17,7 +16,7 @@ namespace TekramApp.Services.Shops
 
         public async Task<List<Product>> GetAllProductsAsync()
         {
-            return await _context.Products.Include(p => p.Shop).ToListAsync();
+            return await _context.Products.ToListAsync();
         }
 
         public async Task<List<Product>> GetProductsByShopIdAsync(Guid shopId)

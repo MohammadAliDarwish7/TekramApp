@@ -1,4 +1,5 @@
 ﻿using TekramApp.Models;
+using TekramApp.ViewModels;
 
 namespace TekramApp.Interfaces
 {
@@ -6,7 +7,7 @@ namespace TekramApp.Interfaces
     {
         Task<List<Shop>> GetAllShopsAsync();
         Task<Shop?> GetShopByIdAsync(Guid id);
-        Task<Shop> CreateShopAsync(Shop shop);
+        Task<Shop> CreateShopAsync(ShopCreateDto shop);
         Task<Shop?> UpdateShopAsync(Guid id, Shop shop);
         Task<bool> DeleteShopAsync(Guid id);
     }

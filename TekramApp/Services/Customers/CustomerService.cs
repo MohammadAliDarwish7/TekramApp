@@ -52,7 +52,7 @@ namespace TekramApp.Services.Customers
         }
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
-            return await _context.Customers.Include(c => c.Addresses).ToListAsync();
+            return await _context.Customers.ToListAsync();
         }
         public async Task<bool> UpdateCustomerAsync(Guid id, CustomerRegisterDto dto)
         {
@@ -69,16 +69,16 @@ namespace TekramApp.Services.Customers
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> AddAddressAsync(Guid customerId, AddressDto addressDto)
+        public async Task<bool> AddAddressAsync(AddressDto addressDto)
         {
-            var customer = await _context.Customers.FindAsync(customerId);
+            var customer = await _context.Customers.FindAsync(addressDto.CustomerId);
             if (customer == null) return false;
 
             if (addressDto.IsDefault)
             {
                 // unset previous default addresses
                 var existingDefaults = await _context.Addresses
-                    .Where(a => a.CustomerId == customerId && a.IsDefault)
+                    .Where(a => a.CustomerId == addressDto.CustomerId && a.IsDefault)
                     .ToListAsync();
                 foreach (var addr in existingDefaults)
                     addr.IsDefault = false;
@@ -86,10 +86,10 @@ namespace TekramApp.Services.Customers
 
             var address = new Address
             {
-                CustomerId = customerId,
+                CustomerId = addressDto.CustomerId,
                 AddressLine = addressDto.AddressLine,
-                //City = addressDto.City,
-                //Country = addressDto.Country,
+                CityId = addressDto.CityId,
+                CountryId = addressDto.CountryId,
                 IsDefault = addressDto.IsDefault
             };
 
@@ -97,6 +97,18 @@ namespace TekramApp.Services.Customers
             await _context.SaveChangesAsync();
             return true;
         }
+
+
+        public async Task<List<Address>> GetCustomerAddresses(Guid customerId)
+        {
+            var address = await _context.Addresses
+    .Where(a => a.CustomerId == customerId).ToListAsync();
+            if (address == null) return null;
+
+            return address;
+
+        }
+
         public async Task<bool> UpdateAddressAsync(Guid customerId, Guid addressId, AddressDto addressDto)
         {
             var address = await _context.Addresses
@@ -205,6 +217,31 @@ namespace TekramApp.Services.Customers
 
             if (await _context.Customers.AnyAsync(c => c.Username == dto.Username))
                 throw new ArgumentException("Username already exists");
+        }
+
+        public async Task<List<CountryDto>> GetAllCountriesAsync()
+        {
+            return await _context.Countries
+                .OrderBy(c => c.Name)
+                .Select(c => new CountryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToListAsync();
+        }
+
+        public async Task<List<CityDto>> GetAllCitiesAsync()
+        {
+            return await _context.Cities
+                .OrderBy(c => c.Name)
+                .Select(c => new CityDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    CountryId = c.CountryId
+                })
+                .ToListAsync();
         }
     }
 }

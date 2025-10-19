@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TekramApp.Attribute;
 using TekramApp.Interfaces;
 using TekramApp.Models;
+using TekramApp.ViewModels;
 
 namespace TekramApp.Controllers.Shops
 {
@@ -38,10 +39,10 @@ namespace TekramApp.Controllers.Shops
 
         [HttpPost]
         [UsePermissions("ManageShops")]
-        public async Task<IActionResult> Create([FromBody] Shop shop)
+        public async Task<IActionResult> Create([FromForm] ShopCreateDto dto)
         {
-            var created = await _shopService.CreateShopAsync(shop);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            var shop = await _shopService.CreateShopAsync(dto);
+            return Ok(shop);
         }
 
         [HttpPut("{id}")]

@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using TekramApp.Context;
 using TekramApp.Interfaces;
 using TekramApp.Models;
+using TekramApp.ViewModels;
 
 namespace TekramApp.Services.Shops
 {
@@ -25,12 +27,41 @@ namespace TekramApp.Services.Shops
             return await _context.Shops.FindAsync(id);
         }
 
-        public async Task<Shop> CreateShopAsync(Shop shop)
+        public async Task<Shop> CreateShopAsync(ShopCreateDto dto)
         {
+            var shop = new Shop
+            {
+                Id = Guid.NewGuid(),
+                Name = dto.Name,
+                IsOpen = dto.IsOpen,
+                Currency = dto.Currency,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            // Handle file upload
+            if (dto.Image != null && dto.Image.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "shops");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = Guid.NewGuid() + Path.GetExtension(dto.Image.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.Image.CopyToAsync(stream);
+                }
+
+                shop.ImageUrl = $"/images/shops/{fileName}";
+            }
+
             _context.Shops.Add(shop);
             await _context.SaveChangesAsync();
+
             return shop;
         }
+
 
         public async Task<Shop?> UpdateShopAsync(Guid id, Shop shop)
         {

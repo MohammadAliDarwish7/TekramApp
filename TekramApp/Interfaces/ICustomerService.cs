@@ -17,11 +17,15 @@ namespace TekramApp.Interfaces
         Task<bool> UpdateCustomerAsync(Guid id, CustomerRegisterDto dto);
 
         // Address Management
-        Task<bool> AddAddressAsync(Guid customerId, AddressDto addressDto);
+        Task<bool> AddAddressAsync(AddressDto addressDto);
+        Task<List<Address>> GetCustomerAddresses(Guid customerId);
         Task<bool> UpdateAddressAsync(Guid customerId, Guid addressId, AddressDto addressDto);
         Task<bool> DeleteAddressAsync(Guid customerId, Guid addressId);
 
         Task<TokenResponseDto?> LoginMobileAsync(CustomerLoginDto dto);
         Task<TokenResponseDto?> RefreshTokenAsync(string refreshToken);
+        Task<List<CountryDto>> GetAllCountriesAsync();
+        Task<List<CityDto>> GetAllCitiesAsync();
+
     }
 }

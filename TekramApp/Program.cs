@@ -9,6 +9,7 @@ using TekramApp.Interfaces;
 using TekramApp.Models;
 using TekramApp.Services.Auth;
 using TekramApp.Services.Customers;
+using TekramApp.Services.Shops;
 using static TekramApp.Helpers.JWTHelper;
 using static TekramApp.Helpers.PasswordHelper;
 
@@ -67,8 +68,9 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUsers, UserService>();
 builder.Services.AddScoped<IRoles, RoleService>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
-
+builder.Services.AddScoped<IShopService, ShopService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IPasswordHasher<Customer>, PasswordHasher<Customer>>();
 
 
@@ -121,5 +123,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseStaticFiles();
 
 app.Run();

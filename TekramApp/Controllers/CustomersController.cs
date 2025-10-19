@@ -71,12 +71,20 @@ namespace TekramApp.Controllers
             return Ok();
         }
 
-        [HttpPost("{customerId}/addresses")]
-        public async Task<IActionResult> AddAddress(Guid customerId, AddressDto addressDto)
+        [HttpPost("addresses")]
+        public async Task<IActionResult> AddAddress(AddressDto addressDto)
         {
-            var result = await _customerService.AddAddressAsync(customerId, addressDto);
+            var result = await _customerService.AddAddressAsync(addressDto);
             if (!result) return BadRequest();
             return Ok();
+        }
+
+        [HttpGet("addresses/{customerId}")]
+        public async Task<IActionResult> GetCustomerAddresses(Guid customerId)
+        {
+            var result = await _customerService.GetCustomerAddresses(customerId);
+            if (result.Count == 0) return NotFound();
+            return Ok(result);
         }
 
         [HttpPut("{customerId}/addresses/{addressId}")]
